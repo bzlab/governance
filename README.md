@@ -1,2 +1,2 @@
 # governance
-A nove On-chain Blockchain governance framework 
+A Novel On-chain Blockchain Governance Framework 

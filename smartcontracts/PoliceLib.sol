@@ -1,11 +1,28 @@
+
+/* GNU GPL 3.0-License-Identifier
+ * Police Governance Framework  Copyright (C) 2020  Taner Dursun
+ *   This program comes with ABSOLUTELY NO WARRANTY
+ *   This is free software, and you are welcome to redistribute it
+ *   by referencing its original source.
+ *      Istanbul Technical University and TUBITAK BILGEM Blockchain Research Lab
+ *   
+ *
+ * @title Basic Utils Solidity Library
+ * @author Taner Dursun <tdursun@gmail.com>
+ *
+ * @dev A Solidity library built to complete assertions in Solidity unit tests.
+ *      This library was developed for the Police On-Chain blockchain governance project.
+ */
+ 
 pragma solidity >=0.5.0 <0.7.0;
+
 
 library PoliceLib {
     enum DecisionType{ YES, NO, ABSTAIN}
     enum ActorType{ FOUNDER, INITIAL_DEVELOPER, DEVELOPER, MINER, USER, EXCHANGE_OWNER, EXCHANGE_USER, OTHER}
     enum ProposalStatus{ ACTIVE, REJECTED, WITHDRAWN, ACCEPTED}
     
-   /**
+        /**
     * toEthSignedMessageHash
     * @dev prefix a bytes32 value with "\x19Ethereum Signed Message:"
     * and hash the result
@@ -20,8 +37,25 @@ library PoliceLib {
     );
   }
   
-  
-  /**
+  function verify(address p, bytes32 hash, uint8 v, bytes32 r, bytes32 s) public pure returns(bool) {
+        
+        // Note: this only verifies that signer is correct.
+        // You'll also need to verify that the hash of the data is also correct.
+        //convert toEthSignedMessageHash
+        //bytes _msgHex
+        //bytes32 prefixedHash = keccak256("\x19Ethereum Signed Message:\n", uint2str(_msgHex.length), _msgHex);
+        //address signer = ecrecover(prefixedHash, v, r, s);
+        
+        //signature = signature.substr(2); //remove 0x
+        //const r = '0x' + signature.slice(0, 64)
+        //const s = '0x' + signature.slice(64, 128)
+        //const v = '0x' + signature.slice(128, 130)
+        //const v_decimal = web3.toDecimal(v)
+        
+        return ecrecover(hash, v, r, s) == p;  //compare with the address given
+   }
+    
+    /**
    * @dev Recover signer address from a message by using their signature
    * @param hash bytes32 message, the hash is the signed message. What is recovered is the signer address.
    * @param signature bytes signature, the signature is generated using web3.eth.sign()
@@ -66,7 +100,7 @@ library PoliceLib {
     }
 
     
-    //Disclaimer. This following functions are retrieved from https://github.com/GNSPS/solidity-bytes-utils/blob/master/contracts/BytesLib.sol
+    //This function is quoted from https://github.com/GNSPS/solidity-bytes-utils/blob/master/contracts/BytesLib.sol
     function slice(bytes memory _bytes, uint256 _start, uint256 _length) internal pure returns (bytes memory)
     {
         require(_length + 31 >= _length, "slice_overflow");
@@ -127,6 +161,7 @@ library PoliceLib {
         return tempBytes;
     }
     
+    //This function is quoted from https://github.com/GNSPS/solidity-bytes-utils/blob/master/contracts/BytesLib.sol
     function toBytes32(bytes memory _bytes, uint256 _start) internal pure returns (bytes32) {
         require(_start + 32 >= _start, "toBytes32_overflow");
         require(_bytes.length >= _start + 32, "toBytes32_outOfBounds");
@@ -139,6 +174,7 @@ library PoliceLib {
         return tempBytes32;
     }
     
+    //This function is quoted from https://github.com/GNSPS/solidity-bytes-utils/blob/master/contracts/BytesLib.sol
     function toUint32(bytes memory _bytes, uint256 _start) internal pure returns (uint32) {
         require(_start + 4 >= _start, "toUint32_overflow");
         require(_bytes.length >= _start + 4, "toUint32_outOfBounds");
@@ -151,6 +187,7 @@ library PoliceLib {
         return tempUint;
     }
     
+    //This function is quoted from https://github.com/GNSPS/solidity-bytes-utils/blob/master/contracts/BytesLib.sol
     function toUint8(bytes memory _bytes, uint256 _start) internal pure returns (uint8) {
         require(_start + 1 >= _start, "toUint8_overflow");
         require(_bytes.length >= _start + 1 , "toUint8_outOfBounds");

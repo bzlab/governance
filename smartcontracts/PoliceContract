@@ -1,0 +1,50 @@
+/* GNU GPL 3.0-License-Identifier
+ * Police Governance Framework  Copyright (C) 2020  Taner Dursun
+ *   This program comes with ABSOLUTELY NO WARRANTY
+ *   This is free software, and you are welcome to redistribute it
+ *   by referencing its original source.
+ *      Istanbul Technical University and TUBITAK BILGEM Blockchain Research Lab
+ *   
+ *
+ * @title Police Abstract Contract
+ * @author Taner Dursun <tdursun@gmail.com>
+ *
+ * @dev An Abstract Contract to be inherited by other contracts in order to benefit 
+ *      from the common variables and types.
+ *      This Contract was developed for the Police On-Chain blockchain governance project.
+ */
+pragma solidity ^0.5.3;
+contract PoliceContract {
+
+    constructor() internal {
+    }
+
+    //make sure that caller is authorized (proposer)
+    modifier onlyItsProposer(uint pid, address proposerSignatureAddress) {
+      if (msg.sender == proposerSignatureAddress) {
+         _;
+      }
+    }
+    
+    //make sure that caller is a registered actor
+    modifier registeredActor(string memory did, address registryContract) {
+      (bool success, bytes memory data) = registryContract.call(abi.encodeWithSignature("isRegistered(string)", did));
+      //registryContract.call(bytes4(keccak256("isRegistered(string)")),did);
+      (bool  registered) = abi.decode(data,(bool));
+      if (registered) {
+         _;
+      }
+    }
+    
+   
+    modifier ownerOfDID(string memory did, address adr, address registryContract) {
+        //msg.sender available ise adr parametresne gerek yok
+      (bool success, bytes memory data) = registryContract.call(abi.encodeWithSignature("checkAddress(string,address)", did, adr));
+      bool  sonuc = abi.decode(data,(bool));
+      
+      if (sonuc) {
+         _;
+      }
+    }
+    
+}

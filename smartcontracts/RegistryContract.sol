@@ -1,4 +1,21 @@
+/* GNU GPL 3.0-License-Identifier
+ * Police Governance Framework  Copyright (C) 2020  Taner Dursun
+ *   This program comes with ABSOLUTELY NO WARRANTY
+ *   This is free software, and you are welcome to redistribute it
+ *   by referencing its original source.
+ *      Istanbul Technical University and TUBITAK BILGEM Blockchain Research Lab
+ *   
+ *
+ * @title Registry Contract
+ * @author Taner Dursun <tdursun@gmail.com>
+ *
+ * @dev Decentralized Identity Management Service
+ *      Stores all DID and DDO values of the actors 
+ *      This Contract was developed for the Police On-Chain blockchain governance project.
+ */
+ 
 pragma solidity ^0.5.3;
+//pragma experimental ABIEncoderV2;
 
 import "./PoliceLib.sol";
 
@@ -18,8 +35,9 @@ contract RegistryContract {
         //bytes pubKey;  or accountAddress
         string onboarder;
         string did;
-        bytes signature;  
-        uint8 flag; //default value 38
+        bytes signature;   //TODO make this Signature type. Then check whether auto parse a hexstring given as parameter
+        //bool status;
+        uint8 flag;  //default 38
     }
 
     mapping (string => uint256) reputations;   // reputations of experts
@@ -39,7 +57,8 @@ contract RegistryContract {
 
     //CONSTRUCTOR
     constructor() internal{
-        // Note that the following intial values are used for just experimental purpose.
+        //Notice that, this values are used just testing purpose. You should use your own key pairs
+        
         //create founder numDDOs
         //bytes memory pubf1 = "0x627306090abaB3A6e1400e9345bC60c78a8BEf57";
         address pubf1=0x627306090abaB3A6e1400e9345bC60c78a8BEf57;

@@ -197,14 +197,13 @@ contract VotingHandlerContract is PoliceContract{ //THINK rename as GovernanceCo
         if (result == ProposalStatus.ACCEPTED){ 
             policies[pid] = Policy(id, pTitle, description, policy,date);
              //trigger policy activation/deactivation
-             //TODO
              if(!PoliceLib.compareStr(policy,"")){
                  //create a new policy
-                 //deployPolicy(policy);
+                 deployPolicy(policy);
                  
              }else{
                  //remove existing policy
-                 //undeployPolicy(id);
+                 undeployPolicy(id);
              }
         }
         
